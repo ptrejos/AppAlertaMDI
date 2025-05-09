@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/fondo_principal">
+
+    <!-- AppBar con título -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_primario">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="Detalle del Incidente"
+            app:titleTextColor="@android:color/white" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenido principal -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <!-- Contenedor para el mapa en lugar de fragmento directo -->
+            <FrameLayout
+                android:id="@+id/map_container"
+                android:layout_width="0dp"
+                android:layout_height="250dp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <!-- Indicador de estado -->
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipEstado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="En proceso"
+                android:textColor="@android:color/white"
+                app:chipBackgroundColor="@color/color_secundario"
+                android:layout_margin="16dp"
+                app:layout_constraintTop_toTopOf="@id/map_container"
+                app:layout_constraintEnd_toEndOf="@id/map_container" />
+
+            <!-- Contenedor de información -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                app:layout_constraintTop_toBottomOf="@id/map_container">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <!-- Imagen del incidente con borde -->
+                    <ImageView
+                        android:id="@+id/imgFotoConsulta"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:adjustViewBounds="true"
+                        android:scaleType="centerCrop"
+                        android:onClick="mostrarImagenCompleta"
+                        android:contentDescription="Foto del incidente reportado"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        tools:src="@android:drawable/ic_menu_camera" />
+
+                    <!-- Título y categoría -->
+                    <TextView
+                        android:id="@+id/tvTituloCategoria"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="CATEGORÍA"
+                        android:textSize="12sp"
+                        android:textColor="@color/color_primario"
+                        android:textStyle="bold"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/imgFotoConsulta"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <TextView
+                        android:id="@+id/lbCategoria_CQ"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvTituloCategoria"
+                        app:layout_constraintStart_toEndOf="@id/imgFotoConsulta"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="Problema de tránsito" />
+
+                    <!-- Situación -->
+                    <TextView
+                        android:id="@+id/tvTituloSituacion"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="SITUACIÓN"
+                        android:textSize="12sp"
+                        android:textColor="@color/color_primario"
+                        android:textStyle="bold"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/lbCategoria_CQ"
+                        app:layout_constraintStart_toEndOf="@id/imgFotoConsulta"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <TextView
+                        android:id="@+id/lbSituacion_CQ"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:textColor="#333333"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvTituloSituacion"
+                        app:layout_constraintStart_toEndOf="@id/imgFotoConsulta"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="Semáforo averiado" />
+
+                    <!-- Separador horizontal -->
+                    <View
+                        android:id="@+id/divider1"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#EEEEEE"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/imgFotoConsulta" />
+
+                    <!-- Fecha y hora -->
+                    <TextView
+                        android:id="@+id/tvTituloFechaHora"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="FECHA Y HORA"
+                        android:textSize="12sp"
+                        android:textColor="@color/color_primario"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/divider1"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/lbFechaHora_CQ"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="#333333"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvTituloFechaHora"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="05/05/2025 15:30" />
+
+                    <!-- Descripción -->
+                    <TextView
+                        android:id="@+id/tvTituloDescripcion"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="DESCRIPCIÓN"
+                        android:textSize="12sp"
+                        android:textColor="@color/color_primario"
+                        android:textStyle="bold"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintTop_toBottomOf="@id/lbFechaHora_CQ"
+                        app:layout_constraintStart_toStartOf="parent" />
+
+                    <TextView
+                        android:id="@+id/lbDescripcion_CQ2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="14sp"
+                        android:textColor="#333333"
+                        android:layout_marginTop="4dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvTituloDescripcion"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:text="El semáforo de la intersección entre la Av. Principal y Calle Secundaria no está funcionando desde hace dos días, causando congestión de tráfico y situaciones peligrosas para los peatones." />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- Botón flotante para compartir o reportar -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCompartir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@android:drawable/ic_menu_share"
+        android:contentDescription="Compartir incidente"
+        app:tint="@android:color/white"
+        app:backgroundTint="@color/color_acento"
+        app:layout_anchor="@id/map_container"
+        app:layout_anchorGravity="bottom|start" />
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="purple_500">#0B4F8C</color>
+    <!-- Colors Login -->
+    <!-- Tema Claro inspirado en el modelo -->
+    <color name="primary_color">#1E88E5</color>       <!-- Azul principal más vibrante -->
+    <color name="primary_dark_color">#1565C0</color>  <!-- Azul oscuro para la barra de estado -->
+    <color name="primary_light_color">#64B5F6</color> <!-- Azul claro para elementos secundarios -->
+    <color name="accent_color">#1E88E5</color>        <!-- Mismo azul para coherencia visual -->
+    <color name="background_color">#1E88E5</color>    <!-- Fondo azul como en el modelo -->
+    <color name="card_background">#FFFFFF</color>     <!-- Tarjeta blanca -->
+    <color name="primary_text">#212121</color>        <!-- Texto casi negro para mejor legibilidad -->
+    <color name="secondary_text">#757575</color>      <!-- Texto gris para elementos secundarios -->
+    <color name="hint_text">#BDBDBD</color>           <!-- Texto gris claro para hints -->
+    <color name="divider_color">#EEEEEE</color>       <!-- Divisores muy sutiles -->
+    <color name="error_color">#F44336</color>         <!-- Rojo para errores -->
+    <color name="success_color">#4CAF50</color>       <!-- Verde para éxito -->
+    <color name="icon_color">#FFFFFF</color>          <!-- Iconos blancos -->
+    <color name="button_text_color">#FFFFFF</color>   <!-- Texto de botón blanco -->
+
+    <!-- Colores para modo oscuro (opcionales) -->
+    <color name="dark_background_color">#0D47A1</color>       <!-- Azul más oscuro para fondo en modo noche -->
+    <color name="dark_card_background">#263238</color>        <!-- Tarjeta gris oscuro -->
+    <color name="dark_primary_text">#FFFFFF</color>           <!-- Texto blanco -->
+    <color name="dark_secondary_text">#B0B0B0</color>         <!-- Texto gris claro -->
+    <color name="dark_divider_color">#3D3D3D</color>          <!-- Divisores oscuros -->
+    <!-- Fin Colors Login -->
+
+    <color name="color_primario">#122f51</color>
+    <color name="color_secundario">#17a7a8</color>
+    <color name="color_terciario">#8bb6a3</color>
+    <color name="fondo_principal">#1E88E5</color>
+
+    <color name="color_acento">#fe958f</color>
+
+    <color name="color_primario_alpha">#8bb6a3</color>
+    <color name="color_naranja">#FFA500</color>  <!-- Para incidentes pendientes -->
+    <color name="color_verde">#4CAF50</color>
+</resources>

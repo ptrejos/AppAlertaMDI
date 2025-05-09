@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">AppAlertaMDI</string>
+    <string name="hint_Nombre">Nombre</string>
+    <!-- login -->
+    <string name="welcome_message">Alerta Independencia</string>
+    <string name="username_hint">Usuario</string>
+    <string name="password_hint">Contraseña</string>
+    <string name="login_button_text">Iniciar Sesión</string>
+    <string name="forgot_password">Olvidaste tu Contraseña?</string>
+    <string name="no_account_text">No tienes una cuenta?</string>
+    <string name="sign_up_text">Registrate</string>
+    <string name="app_logo">Logo de la aplicación</string>
+    <string name="login_success">¡Inicio de sesión exitoso!</string>
+    <string name="login_failed">Error al iniciar sesión. Por favor, verifica tus credenciales.</string>
+    <string name="username_empty_error">El nombre de usuario no puede estar vacío</string>
+    <string name="password_empty_error">La clave no puede estar vacía</string>
+    <string name="password_length_error">La clave debe tener al menos 6 caracteres</string>
+    <!-- fin login -->
+
+</resources>
