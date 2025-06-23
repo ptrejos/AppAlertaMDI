@@ -68,4 +68,24 @@ dependencies {
     implementation ("com.google.android.material:material:1.9.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1") // O la versión más reciente
 
+  
+    // Otras dependencias para las UnitTests
+
+    // JUnit para pruebas básicas
+    testImplementation("junit:junit:4.13.2")
+
+    // Mockito para pruebas con mocks
+    testImplementation("org.mockito:mockito-core:4.11.0")
+
+    // Robolectric para pruebas Android sin emulador
+    testImplementation("org.robolectric:robolectric:4.10.3")
+
+    // AndroidX Test Core (ApplicationProvider, etc.)
+    testImplementation("androidx.test:core:1.5.0")
+
+    // Kotlin test
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+
+
+
 }

@@ -22,7 +22,7 @@ class Incidencia (
     @Part("descripcion") var descripcion: RequestBody,
     @Part("latitud") var latitud: RequestBody,
     @Part("longitud") var longitud: RequestBody,
-    @Part foto: MultipartBody.Part
+    @Part var foto: MultipartBody.Part
 
 )
 
