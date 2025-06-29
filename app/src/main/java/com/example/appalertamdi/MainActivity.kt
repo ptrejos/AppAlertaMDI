@@ -15,7 +15,10 @@ import com.example.appalertamdi.config.ApiWeb
 import com.example.appalertamdi.entidad.Usuario
 import com.example.appalertamdi.config.configuracion
 import com.example.appalertamdi.databinding.ActivityMainBinding
-
+import retrofit2.HttpException
+import java.io.IOException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 //variables globales para el codigo y nombre de usuario
 object GlobalData {
@@ -26,7 +29,7 @@ object GlobalData {
 class MainActivity : AppCompatActivity() {
 
     private lateinit var loadingDialog: AlertDialog
-    lateinit var apiWeb: ApiWeb;
+    private lateinit var apiWeb: ApiWeb // Cambiado a private y sin punto y coma
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,10 +42,10 @@ class MainActivity : AppCompatActivity() {
         val btnLogin = findViewById<Button>(R.id.btnLogin)
 
         btnLogin.setOnClickListener {
-            val user = username.text.toString()
-            val pass = clave.text.toString()
+            val user = username.text.toString().trim() // Agregado trim()
+            val pass = clave.text.toString().trim() // Agregado trim()
 
-            if (user.isNotEmpty() && pass.isNotEmpty()){
+            if (user.isNotEmpty() && pass.isNotEmpty()) {
                 autenticarUsuario(user, pass)
             } else {
                 Toast.makeText(this, "Complete todos los campos", Toast.LENGTH_SHORT).show()
@@ -52,72 +55,99 @@ class MainActivity : AppCompatActivity() {
         setupLoadingDialog()
     }
 
-     fun autenticarUsuario(user: String, pass: String) {
-        //val callRespuesta = apiWeb.validaUsuario("validaLogin")
-         val callRespuesta = apiWeb.validaUsuario("validalogin", user, pass)
-         showLoadingDialog();
+    private fun autenticarUsuario(user: String, pass: String) {
+        val callRespuesta = apiWeb.validaUsuario("validalogin", user, pass)
+        showLoadingDialog()
+
         callRespuesta.enqueue(object : Callback<List<Usuario>> {
             override fun onFailure(call: Call<List<Usuario>>, t: Throwable) {
-                //Log.d("Mensaje_Error", "Error al consumir el servicio ${t.localizedMessage}", t)
+                hideLoadingDialog()
+
+                val errorMessage = when (t) {
+                    is SocketTimeoutException -> "Tiempo de espera agotado. El servidor tardó demasiado en responder"
+                    is ConnectException -> "No se pudo conectar al servidor"
+                    is IOException -> "Error de conexión. Verifica tu internet"
+                    is HttpException -> "Error del servidor: ${t.code()}"
+                    else -> "Error inesperado: ${t.localizedMessage}"
+                }
+
+                Log.e("AuthError", "Error al autenticar: ${t.javaClass.simpleName}", t)
                 Toast.makeText(
                     this@MainActivity,
-                    "Error al consumir el servicio : ${t.localizedMessage}",
-                    Toast.LENGTH_SHORT
+                    errorMessage,
+                    Toast.LENGTH_LONG
                 ).show()
             }
 
             override fun onResponse(call: Call<List<Usuario>>, response: Response<List<Usuario>>) {
+                hideLoadingDialog() // Siempre ocultar el dialog al recibir respuesta
+
                 if (response.isSuccessful) {
                     val usuarios = response.body()
-                    if (usuarios != null && usuarios.isNotEmpty()) {
+                    if (!usuarios.isNullOrEmpty()) {
                         val usuario = usuarios[0]
                         val rs = usuario.rs
 
-                        if (rs == "1") {
-
-                            GlobalData.codigo = usuario.codigo
-                            GlobalData.nombre = usuario.nombre
-                            menuPrincipal() // Ejecutar la función deseada
-
-                        } else if (rs == "0") {
-                            hideLoadingDialog()
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Usuario o clave incorrecta",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
+                        when (rs) {
+                            "1" -> {
+                                // Login exitoso
+                                GlobalData.codigo = usuario.codigo
+                                GlobalData.nombre = usuario.nombre
+                                Log.d("Login", "Usuario autenticado: ${usuario.nombre}")
+                                menuPrincipal()
+                            }
+                            "0" -> {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Usuario o contraseña incorrecta",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                            else -> {
+                                Log.w("Login", "Estado de respuesta desconocido: $rs")
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Error en la autenticación. Intenta nuevamente",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     } else {
-                        hideLoadingDialog()
                         Toast.makeText(
                             this@MainActivity,
-                            "No hay datos devuelos",
+                            "No hay datos devueltos", // Corregido typo
                             Toast.LENGTH_SHORT
                         ).show()
                     }
                 } else {
-                    hideLoadingDialog()
-                    //Log.d("Mensaje_Error", "Error de conexión ${response.code()} - ${response.message()}")
-                        Toast.makeText(
-                            this@MainActivity,
-                            "Error de conexión ${response.code()} - ${response.message()}",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                    Log.e("Login", "Error HTTP: ${response.code()} - ${response.message()}")
+
+                    val errorMessage = when (response.code()) {
+                        401 -> "Credenciales inválidas"
+                        404 -> "Servicio no encontrado"
+                        500 -> "Error interno del servidor"
+                        else -> "Error de conexión: ${response.code()}"
+                    }
+
+                    Toast.makeText(
+                        this@MainActivity,
+                        errorMessage,
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         })
     }
 
-    fun menuPrincipal() {
-         val intent = Intent(this@MainActivity, PrincipalActivity::class.java)
-         startActivity(intent)
-         finish()
-        hideLoadingDialog()
+    private fun menuPrincipal() {
+        val intent = Intent(this@MainActivity, PrincipalActivity::class.java)
+        startActivity(intent)
+        finish()
+        // Removido hideLoadingDialog() porque ya se llama en onResponse
     }
 
     private fun showLoadingDialog() {
-        if (!loadingDialog.isShowing) {
+        if (::loadingDialog.isInitialized && !loadingDialog.isShowing) {
             loadingDialog.show()
         }
     }
@@ -133,12 +163,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hideLoadingDialog() {
-        if (loadingDialog.isShowing) {
+        if (::loadingDialog.isInitialized && loadingDialog.isShowing) {
             loadingDialog.dismiss()
         }
     }
-
-
-
-
 }

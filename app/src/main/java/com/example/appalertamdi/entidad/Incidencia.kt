@@ -6,16 +6,6 @@ import okhttp3.RequestBody
 import retrofit2.http.Multipart
 import retrofit2.http.Part
 
-/*class Incidencia (
-    @SerializedName("categoria_id") var categoria_id: Int,
-    @SerializedName("usuario_id") var usuario_id: Int,
-    @SerializedName("descripcion") var descripcion: String,
-    @SerializedName("latitud") var latitud: Int,
-    @SerializedName("longitud") var longitud: Int,
-    @SerializedName("foto") var foto: MultipartBody.Part
-
-)*/
-
 class Incidencia (
     @Part("categoria_id") var categoria_id: RequestBody,
     @Part("usuario_id") var usuario_id: RequestBody,
